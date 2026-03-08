@@ -418,8 +418,8 @@ async def dagitty_status():
 async def overleaf_push(request: Request):
     """Push a LaTeX draft to Overleaf.  §IMP: dry-run mode."""
     import os
-    if not os.environ.get("OVERLEAF_TOKEN") and not os.environ.get("OVERLEAF_GIT_URL"):
-        return {"status": "no_key", "connector": "overleaf", "detail": "Set OVERLEAF_TOKEN or OVERLEAF_GIT_URL to enable"}
+    if not os.environ.get("OVERLEAF_TOKEN") and not os.environ.get("OVERLEAF_GIT_URL") and not os.environ.get("OVERLEAF_GIT_TOKEN"):
+        return {"status": "no_key", "connector": "overleaf", "detail": "Set OVERLEAF_GIT_TOKEN to enable"}
     body = await request.json()
     latex = body.get("latex", "")
     if not latex:
@@ -433,10 +433,15 @@ async def overleaf_push(request: Request):
         return _get_overleaf().push_draft(
             latex, filename=body.get("filename", "edith_draft.tex"),
             commit_message=body.get("message", "E.D.I.T.H. auto-push"),
+            project_name=body.get("project", ""),
         )
     except Exception as e:
         return JSONResponse(status_code=500, content={"error": str(e)})
 
+@router.get("/overleaf/projects")
+async def overleaf_projects():
+    """List available Overleaf projects."""
+    return _get_overleaf().list_projects()
 
 @router.get("/overleaf/status")
 async def overleaf_status():

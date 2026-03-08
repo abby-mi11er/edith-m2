@@ -1,8 +1,9 @@
 """
 Overleaf Bridge — Push LaTeX drafts to Overleaf via Git integration.
 =====================================================================
-Uses OVERLEAF_GIT_TOKEN + OVERLEAF_PROJECT_URL from environment.
-Overleaf supports Git access for v2 projects — we push via subprocess.
+Supports multiple Overleaf projects via OVERLEAF_PROJECTS env var (JSON).
+Also supports legacy single-project via OVERLEAF_PROJECT_URL.
+Uses OVERLEAF_GIT_TOKEN for authentication.
 """
 import json
 import logging
@@ -22,24 +23,46 @@ class OverleafBridge:
         self.git_token = git_token or os.environ.get("OVERLEAF_GIT_TOKEN", "")
         self.project_url = project_url or os.environ.get("OVERLEAF_PROJECT_URL", "")
         self._git = shutil.which("git")
+        # Multi-project support: OVERLEAF_PROJECTS = JSON dict {"name": "url", ...}
+        self._projects: dict[str, str] = {}
+        try:
+            raw = os.environ.get("OVERLEAF_PROJECTS", "")
+            if raw:
+                self._projects = json.loads(raw)
+        except (json.JSONDecodeError, TypeError):
+            log.warning("Invalid OVERLEAF_PROJECTS JSON, ignoring")
+        # If single project is set but not in projects dict, add it as "default"
+        if self.project_url and not self._projects:
+            self._projects["Default"] = self.project_url
 
-    def _authenticated_url(self) -> str:
+    def _authenticated_url(self, url: str = "") -> str:
         """Insert token into the Git URL for authentication."""
-        if not self.project_url or not self.git_token:
+        target_url = url or self.project_url
+        if not target_url or not self.git_token:
             return ""
-        # Overleaf Git URL: https://git.overleaf.com/<project_id>
-        # With token: https://token@git.overleaf.com/<project_id>
-        if "://" in self.project_url:
-            scheme, rest = self.project_url.split("://", 1)
+        if "://" in target_url:
+            scheme, rest = target_url.split("://", 1)
             return f"{scheme}://{self.git_token}@{rest}"
-        return self.project_url
+        return target_url
+
+    def list_projects(self) -> dict:
+        """Return available Overleaf projects."""
+        return {"projects": {name: url.split('/')[-1] for name, url in self._projects.items()}}
 
     def push_draft(self, latex_content: str, filename: str = "edith_draft.tex",
-                   commit_message: str = "E.D.I.T.H. auto-push") -> dict:
+                   commit_message: str = "E.D.I.T.H. auto-push",
+                   project_name: str = "") -> dict:
         """Push a LaTeX draft to the Overleaf project."""
         if not self._git:
             return {"error": "git not found in PATH"}
-        auth_url = self._authenticated_url()
+        # Resolve project URL
+        if project_name and project_name in self._projects:
+            target_url = self._projects[project_name]
+        elif self._projects:
+            target_url = list(self._projects.values())[0]
+        else:
+            target_url = self.project_url
+        auth_url = self._authenticated_url(target_url)
         if not auth_url:
             return {"error": "OVERLEAF_GIT_TOKEN or OVERLEAF_PROJECT_URL not set"}
 
@@ -93,6 +116,10 @@ class OverleafBridge:
     def status(self) -> dict:
         if not self._git:
             return {"available": False, "configured": False, "reason": "git not found in PATH"}
-        if not self.git_token or not self.project_url:
+        if not self.git_token or (not self.project_url and not self._projects):
             return {"available": False, "configured": False, "reason": "OVERLEAF_GIT_TOKEN or OVERLEAF_PROJECT_URL not set"}
-        return {"available": True, "configured": True, "project_url": self.project_url.split("@")[-1] if "@" in self.project_url else self.project_url}
+        return {
+            "available": True, "configured": True,
+            "projects": {name: url.split('/')[-1] for name, url in self._projects.items()},
+            "project_count": len(self._projects),
+        }

@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import { apiUrl } from '../api'
 import { useSuggestions, SuggestionChips } from '../components/useSuggestions'
 
@@ -20,8 +20,20 @@ export default function CitationsPanel() {
     const [query, setQuery] = useState('')
     const [citations, setCitations] = useState<Citation[]>([])
     const [loading, setLoading] = useState(false)
+    const [overleafProjects, setOverleafProjects] = useState<Record<string, string>>({})
+    const [selectedProject, setSelectedProject] = useState('')
     const suggestionContext = `${query} ${citations.slice(0, 3).map(c => c.title).join(', ')}`.trim()
     const suggestions = useSuggestions(suggestionContext, 3)
+
+    // Fetch Overleaf projects on mount
+    useEffect(() => {
+        fetch(apiUrl('/api/connectors/overleaf/projects')).then(r => r.json()).then(data => {
+            const proj = data.projects || {}
+            setOverleafProjects(proj)
+            const names = Object.keys(proj)
+            if (names.length > 0) setSelectedProject(names[0])
+        }).catch(() => { })
+    }, [])
 
     const exportBibtex = useCallback(async () => {
         if (citations.length === 0) return
@@ -246,23 +258,29 @@ export default function CitationsPanel() {
                 </button>
                 {citations.length > 0 && (<>
                     <button className="btn btn--sm" onClick={exportBibtex}>Export BibTeX</button>
-                    <button className="btn btn--sm" title="Push citations to Overleaf project" onClick={async () => {
-                        try {
-                            const st = await fetch(apiUrl('/api/connectors/overleaf/status'))
-                            if (st.ok) {
-                                const status = await st.json()
-                                if (!status.available) { alert('Set OVERLEAF_GIT_TOKEN in .env to enable Overleaf sync'); return }
-                            }
-                            const titles = citations.map((c: any) => c.title || '').filter(Boolean)
-                            const res = await fetch(apiUrl('/api/connectors/overleaf/push'), {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ citations: titles, query }),
-                            })
-                            if (res.ok) alert('Pushed to Overleaf!')
-                            else alert('Overleaf push failed — check token')
-                        } catch { alert('Overleaf push failed — check connection') }
-                    }}>Push to Overleaf</button>
+                    {Object.keys(overleafProjects).length > 0 && (<>
+                        <select
+                            value={selectedProject}
+                            onChange={e => setSelectedProject(e.target.value)}
+                            style={{ fontSize: 'var(--text-sm)', padding: '2px 8px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-primary)', background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}
+                        >
+                            {Object.keys(overleafProjects).map(name => (
+                                <option key={name} value={name}>{name}</option>
+                            ))}
+                        </select>
+                        <button className="btn btn--sm" title={`Push to ${selectedProject}`} onClick={async () => {
+                            try {
+                                const titles = citations.map((c: any) => c.title || '').filter(Boolean)
+                                const res = await fetch(apiUrl('/api/connectors/overleaf/push'), {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ latex: `% E.D.I.T.H. Citation Export\n% Query: ${query}\n\n${titles.map(t => `% ${t}`).join('\n')}`, project: selectedProject, filename: 'edith_citations.tex' }),
+                                })
+                                if (res.ok) alert(`Pushed to ${selectedProject}!`)
+                                else alert('Overleaf push failed — check token')
+                            } catch { alert('Overleaf push failed — check connection') }
+                        }}>Push to Overleaf</button>
+                    </>)}
                 </>)}
             </div>
 
