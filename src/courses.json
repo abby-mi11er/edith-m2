@@ -1,0 +1,216 @@
+{
+  "drive_root": "/Volumes/YOUR_DRIVE",
+  "courses": [
+    {
+      "id": "beco",
+      "name": "BECO",
+      "code": "",
+      "folder": "BECO",
+      "category": "American"
+    },
+    {
+      "id": "causal_inference",
+      "name": "Causal Inference",
+      "code": "",
+      "folder": "Causal_Inference",
+      "category": "Methods"
+    },
+    {
+      "id": "comp_poli_econ_sp_2025",
+      "name": "Comp. Poli. Econ.",
+      "code": "Sp 2025",
+      "folder": "Comp_Poli_Econ_Sp_2025",
+      "category": "Comparative"
+    },
+    {
+      "id": "comp_poli_prosem_fa_2023",
+      "name": "Comp. Poli. Pro-Sem",
+      "code": "Fa 2023",
+      "folder": "Comp_Poli_ProSem_Fa_2023",
+      "category": "Comparative"
+    },
+    {
+      "id": "congress_sp_2025",
+      "name": "Congress",
+      "code": "Sp 2025",
+      "folder": "Congress_Sp_2025",
+      "category": "American"
+    },
+    {
+      "id": "data_analysis_1",
+      "name": "Data Analysis 1",
+      "code": "",
+      "folder": "Data_Analysis_1",
+      "category": "Methods"
+    },
+    {
+      "id": "data_analysis_2",
+      "name": "Data Analysis 2",
+      "code": "",
+      "folder": "Data_Analysis_2",
+      "category": "Methods"
+    },
+    {
+      "id": "electoral_politics",
+      "name": "Electoral Politics",
+      "code": "",
+      "folder": "Electoral_Politics",
+      "category": "American"
+    },
+    {
+      "id": "food_policy",
+      "name": "Food Policy",
+      "code": "",
+      "folder": "Food_Policy",
+      "category": "Policy"
+    },
+    {
+      "id": "gis_2",
+      "name": "GIS 2",
+      "code": "",
+      "folder": "GIS_2",
+      "category": "Methods"
+    },
+    {
+      "id": "gis_5300",
+      "name": "GIS 5300",
+      "code": "5300",
+      "folder": "GIS_5300",
+      "category": "Methods"
+    },
+    {
+      "id": "game_theory_fall_2024",
+      "name": "Game Theory",
+      "code": "Fall 2024",
+      "folder": "Game_Theory_Fall_2024",
+      "category": "Formal Theory"
+    },
+    {
+      "id": "ir_prosem_sp_2024",
+      "name": "IR Pro-Sem",
+      "code": "Sp 2024",
+      "folder": "IR_ProSem_Sp_2024",
+      "category": "IR"
+    },
+    {
+      "id": "institutions_fa25",
+      "name": "Institutions",
+      "code": "Fa 2025",
+      "folder": "Institutions_Fa25",
+      "category": "Comparative"
+    },
+    {
+      "id": "machine_learning",
+      "name": "Machine Learning",
+      "code": "",
+      "folder": "Machine_Learning",
+      "category": "Methods"
+    },
+    {
+      "id": "machine_learning_icpsr",
+      "name": "Machine Learning ICPSR",
+      "code": "ICPSR",
+      "folder": "Machine_Learning_ICPSR",
+      "category": "Methods"
+    },
+    {
+      "id": "mle",
+      "name": "MLE",
+      "code": "",
+      "folder": "MLE",
+      "category": "Methods"
+    },
+    {
+      "id": "network_analysis",
+      "name": "Network Analysis",
+      "code": "",
+      "folder": "Network_Analysis",
+      "category": "Methods"
+    },
+    {
+      "id": "political_econ_institutions_fall_24",
+      "name": "Political Econ Institutions",
+      "code": "Fall 2024",
+      "folder": "Political_Econ_Institutions_Fall_24",
+      "category": "Comparative"
+    },
+    {
+      "id": "research_design_fa_2023",
+      "name": "Research Design",
+      "code": "Fa 2023",
+      "folder": "Research_Design_Fa_2023",
+      "category": "Methods"
+    },
+    {
+      "id": "syllabus",
+      "name": "Syllabus",
+      "code": "",
+      "folder": "Syllabus",
+      "category": "Reference"
+    },
+    {
+      "id": "time_series",
+      "name": "Time Series",
+      "code": "",
+      "folder": "Time_Series",
+      "category": "Methods"
+    },
+    {
+      "id": "methods_r_icpsr",
+      "name": "R Programming ICPSR",
+      "code": "ICPSR",
+      "folder": "R_ICPSR",
+      "category": "Methods"
+    },
+    {
+      "id": "methods_python",
+      "name": "Python Methods",
+      "code": "",
+      "folder": "Python",
+      "category": "Methods"
+    }
+  ],
+  "research_projects": [
+    {
+      "id": "snap_paper",
+      "name": "SNAP Paper",
+      "folder": "SNAP_Paper",
+      "category": "Research"
+    },
+    {
+      "id": "second_year_paper",
+      "name": "Second Year Paper",
+      "folder": "Second_Year_Paper",
+      "category": "Research"
+    },
+    {
+      "id": "nationalized_politics",
+      "name": "Nationalized Politics",
+      "folder": "Nationalized_Politics",
+      "category": "Research"
+    }
+  ],
+  "file_filters": {
+    "show": [
+      ".pdf",
+      ".pptx",
+      ".docx",
+      ".md",
+      ".txt",
+      ".do",
+      ".R"
+    ],
+    "hide": [
+      ".csv",
+      ".dta",
+      ".xlsx",
+      ".xls",
+      ".shp",
+      ".dbf",
+      ".prj",
+      ".geojson",
+      ".json",
+      ".DS_Store"
+    ]
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "history": [
+    {
+      "question": "Why might a policy that successfully reduces unemployment in one country completely fail or even backfire when implemented in another, even if the two countries seem very similar on the surface?",
+      "difficulty": "intermediate",
+      "topic": "causal inference",
+      "timestamp": 1772735415.544888
+    },
+    {
+      "question": "If a city provides free weekly tutoring to struggling students and later observes that their graduation rates increase, **how** might the tutoring have actually *caused* that long-term effect?",
+      "difficulty": "intermediate",
+      "topic": "causal inference",
+      "timestamp": 1772735921.215797
+    },
+    {
+      "question": "If we observe that cities with more public libraries also have lower crime rates, why is it crucial to understand the specific causal mechanism before concluding that building more libraries is an effective way to reduce crime?",
+      "difficulty": "intermediate",
+      "topic": "causal inference",
+      "timestamp": 1772739326.782985
+    },
+    {
+      "question": "Why is it often insufficient to know *that* a treatment works, without also understanding *how* it works?",
+      "difficulty": "intermediate",
+      "topic": "causal inference",
+      "timestamp": 1772742341.083636
+    },
+    {
+      "question": "If two different policies both successfully reduce unemployment, why is it still essential to understand the specific causal mechanism through which each one works?",
+      "difficulty": "intermediate",
+      "topic": "causal inference",
+      "timestamp": 1772743839.288876
+    },
+    {
+      "question": "Why does administering a substance intravenously produce a faster and more direct effect on the body compared to ingesting it orally?",
+      "difficulty": "intermediate",
+      "topic": "iv",
+      "timestamp": 1772744661.897587
+    },
+    {
+      "question": "Why does delivering medication through an IV allow it to affect the body much faster than taking that same medication as a pill?",
+      "difficulty": "intermediate",
+      "topic": "iv",
+      "timestamp": 1772745026.297559
+    },
+    {
+      "question": "Why does the fluid in an IV bag flow into a patient's vein, instead of blood flowing from the vein back into the IV tube?",
+      "difficulty": "intermediate",
+      "topic": "iv",
+      "timestamp": 1772745049.548255
+    },
+    {
+      "question": "How can two different policies lead to the exact same desirable outcome, yet a deep understanding of their different causal mechanisms could be the critical factor in deciding which one to scale up?",
+      "difficulty": "intermediate",
+      "topic": "causal inference",
+      "timestamp": 1772752939.829605
+    },
+    {
+      "question": "Why is it critically important for future research to determine if a new medication reduces heart attacks *because* it lowers a patient's blood pressure, versus the medication reducing heart attacks and lowering blood pressure as two separate effects?",
+      "difficulty": "intermediate",
+      "topic": "causal inference",
+      "timestamp": 1772756636.816373
+    }
+  ],
+  "streak": 0,
+  "difficulty": "intermediate",
+  "saved_at": 1772756636.816468
+}

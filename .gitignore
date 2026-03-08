@@ -1,0 +1,88 @@
+# ═══════════════════════════════════════════════════════
+# E.D.I.T.H. M2 — .gitignore
+# ═══════════════════════════════════════════════════════
+
+# ── Secrets & credentials ──────────────────────────────
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# ── Security & session files ───────────────────────────
+.edith_session.lock
+.security_log.jsonl
+ARTEFACTS/.security_log.jsonl
+
+# ── Databases (user-specific, large) ──────────────────
+*.sqlite3
+*.sqlite3-journal
+*.sqlite3-wal
+*.sqlite3-shm
+
+# ── User-generated data (rebuilt per-user) ─────────────
+bibliography_db.json
+claim_inventory.json
+entity_timeline.json
+glossary_graph.json
+citation_graph.json
+experiment_ledger.json
+chapter_anchors.json
+edith_index_manifest.json
+edith_ai_classify_cache.json
+.edith_embed_cache*
+
+# ── Runtime data directories ──────────────────────────
+chroma/
+data/
+flashcards/
+eval/
+VAULT/
+training_data/
+scholarly_data/
+
+# ── Bundled binaries (multi-GB, users install via pip) ─
+_internal/
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.edith_cache/
+
+# ── Logs ──────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ── Node / Build ──────────────────────────────────────
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# ── Editor files ──────────────────────────────────────
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+Thumbs.db
+
+# ── Build outputs ─────────────────────────────────────
+build/
+release/
+
+# ── Research data (lives on user's drive, not in repo) ─
+Courses/
+Research/
+Methods/
+Library/
