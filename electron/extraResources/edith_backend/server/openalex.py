@@ -17,7 +17,7 @@ log = logging.getLogger("edith.openalex")
 
 # ── Config ──────────────────────────────────────────────────────────────────
 BASE_URL = "https://api.openalex.org"
-POLITE_EMAIL = os.environ.get("OPENALEX_POLITE_EMAIL", "user@example.com")  # polite pool identifier
+POLITE_EMAIL = os.environ.get("OPENALEX_POLITE_EMAIL", "amiller@uark.edu")  # polite pool identifier
 API_KEY = os.environ.get("OPENALEX_API_KEY", "")  # set in .env for 100k credits/day
 CACHE_TTL = 3600  # 1 hour
 CACHE_DIR = Path(__file__).parent / ".openalex_cache"

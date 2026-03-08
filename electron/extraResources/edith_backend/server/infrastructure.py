@@ -1305,7 +1305,7 @@ def generate_ignition_script(
     1. Detects CITADEL volume
     2. Sets environment variables
     3. Launches backend (uvicorn) + frontend (Electron)
-    4. Speaks 'Systems Optimal, the user'
+    4. Speaks 'Systems Optimal, Abby'
     """
     if not mount_point:
         try:
@@ -1361,7 +1361,7 @@ on run
     
     -- Phase 3: The Greeting
     delay 5
-    say "Systems Optimal, the user. What are we discovering today?" ¬
+    say "Systems Optimal, Abby. What are we discovering today?" ¬
         using "Samantha" speaking rate 180
     
     -- Phase 4: Notification

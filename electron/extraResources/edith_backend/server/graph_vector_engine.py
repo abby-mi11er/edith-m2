@@ -640,7 +640,7 @@ class GraphVectorEngine:
     def cross_pollination_audit(self) -> list[dict]:
         """Weekly audit: check if user's notes are consistent with the literature.
 
-        "Does the data in the 2025 V-Dem update support the user's note
+        "Does the data in the 2025 V-Dem update support Abby's note
         from Tuesday?"
         """
         conflicts = []

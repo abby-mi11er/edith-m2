@@ -235,7 +235,7 @@ class SovereignBrain:
         online = sum(1 for _, status in checks if status not in ("offline", "DISCONNECTED", "module offline"))
         total = len(checks)
 
-        greeting = f"Good morning. {online}/{total} systems online.\n\n"
+        greeting = f"Good morning, Abby. {online}/{total} systems online.\n\n"
 
         # Mention new papers
         for name, status in checks:
@@ -520,7 +520,7 @@ class SovereignBrain:
         result["cycles_completed"] = self._cycle_count
         result["message"] = (
             "The Mac is empty. Your brain is on the Bolt. "
-            f"Good night. ({self._cycle_count} thoughts metabolized today.)"
+            f"Good night, Abby. ({self._cycle_count} thoughts metabolized today.)"
         )
 
         return result

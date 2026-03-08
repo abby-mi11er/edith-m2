@@ -228,9 +228,10 @@ def check_and_repair_index(chroma_dir: str) -> dict:
 def get_reindex_command(collection_name: str, data_root: str = "") -> str:
     """Generate the CLI command to re-index a collection."""
     data_root = data_root or os.environ.get("EDITH_DATA_ROOT", "")
+    project_root = os.environ.get("EDITH_PROJECT_ROOT", os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     return (
-        f"cd /path/to/edith_backend && "
-        f".venv/bin/python3 chroma_index.py "
+        f"cd '{project_root}' && "
+        f"python3 chroma_index.py "
         f"--collection {collection_name} "
         f"--data-root '{data_root}'"
     )

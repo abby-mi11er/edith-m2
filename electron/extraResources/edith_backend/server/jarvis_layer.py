@@ -35,7 +35,7 @@ log = logging.getLogger("edith.jarvis")
 
 # ═══════════════════════════════════════════════════════════════════
 # PILLAR 1: AMBIENT AWARENESS — Real-Time File System Watcher
-# "/I've detected a singular matrix in your state-level nesting."
+# "Abby, I've detected a singular matrix in your state-level nesting."
 # ═══════════════════════════════════════════════════════════════════
 
 class AmbientWatcher:
@@ -457,7 +457,7 @@ class OvernightSandbox:
     def generate_morning_briefing(self, model_chain: list[str] = None) -> dict:
         """Generate the Morning Briefing from overnight results.
 
-        "/while you were out, I ran a simulated debate..."
+        "Abby, while you were out, I ran a simulated debate..."
         """
         model_chain = model_chain or [os.environ.get("EDITH_MODEL", "gemini-2.5-flash")]
 
@@ -491,7 +491,7 @@ class OvernightSandbox:
                 system_instruction=(
                     "You are Winnie, an AI research co-pilot giving a morning briefing. "
                     "You are proactive but never authoritative — everything waits for "
-                    "the user's approval. Use a warm, professional tone."
+                    "Abby's approval. Use a warm, professional tone."
                 ),
                 temperature=0.2,
             )
@@ -1151,7 +1151,7 @@ def generate_daily_brief() -> dict:
         soul = verify_physical_soul()
         if soul.get("verified"):
             brief["greeting"] = (
-                f"Citadel Online. Welcome back. "
+                f"Citadel Online. Welcome back, Abby. "
                 f"Physical Soul is bridged."
             )
         else:
@@ -1545,7 +1545,7 @@ class AmbientNotifier:
     def notify_morning_brief(self, new_papers: int = 0):
         """Morning brief is ready."""
         self._send(
-            "Good morning",
+            "Good Morning, Abby",
             f"Daily brief ready. {new_papers} new papers in the field.",
             sound=True,
         )

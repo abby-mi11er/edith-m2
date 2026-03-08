@@ -263,7 +263,7 @@ class ShadowDrafter:
             "\\usepackage{setspace}\n"
             "\\doublespacing\n\n"
             f"\\title{{{title}}}\n"
-            "\\author{Your Name}\n"
+            f"\\author{{{os.environ.get('EDITH_AUTHOR_NAME', 'Student')}}}\n"
             f"\\date{{{time.strftime('%B %d, %Y')}}}\n\n"
             "\\begin{document}\n"
             "\\maketitle\n\n"

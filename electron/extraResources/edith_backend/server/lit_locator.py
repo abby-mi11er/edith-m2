@@ -211,7 +211,7 @@ class TheoryBridge:
 class LitLocator:
     """Map a paper's position in the theoretical landscape.
 
-    "Winnie highlights the specific 'Theory Bridge.' '/this paper's
+    "Winnie highlights the specific 'Theory Bridge.' 'Abby, this paper's
     broader contribution is that it bridges Principal-Agent Theory with
     Administrative Burden.'"
 
@@ -405,7 +405,7 @@ class LitLocator:
                                    dissertation_topic: str) -> dict:
         """Assess how this paper fits into the user's dissertation.
 
-        "/this paper's broader contribution is that it bridges
+        "Abby, this paper's broader contribution is that it bridges
         Principal-Agent Theory with Administrative Burden. It fills the
         gap I highlighted in your Atlas last week."
         """

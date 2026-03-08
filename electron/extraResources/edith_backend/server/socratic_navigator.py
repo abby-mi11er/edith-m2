@@ -32,7 +32,7 @@ log = logging.getLogger("edith.socratic_navigator")
 
 
 # ═══════════════════════════════════════════════════════════════════
-# Dissertation Ontology — the user's Intellectual Map
+# Dissertation Ontology — Abby's Intellectual Map
 # ═══════════════════════════════════════════════════════════════════
 
 DISSERTATION_MAP = {

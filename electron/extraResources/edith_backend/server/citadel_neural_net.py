@@ -565,7 +565,7 @@ class EDITHBrain:
             "state": "dormant",
             "thoughts_saved": self._thoughts_processed,
             "connections_saved": len(self.hippocampus._connections),
-            "message": "The Mac is empty. Your brain is on the Bolt. Good night.",
+            "message": "The Mac is empty. Your brain is on the Bolt. Good night, Abby.",
         }
 
 

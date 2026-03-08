@@ -11,7 +11,7 @@ Division of Labor:
 
 Two-Stage Query:
     Stage 1 (Retrieval): ChromaDB on Bolt → relevant snippets
-    Stage 2 (Synthesis): Snippets → fine-tuned model → personalized response
+    Stage 2 (Synthesis): Snippets → fine-tuned model → Abby-style response
 
 Usage:
     # Generate training data from your best work
@@ -334,7 +334,7 @@ class HybridEngine:
 
     Stage 2 (Synthesis):
         Pass snippets through fine-tuned model as grounding context.
-        Response sounds like the user on her best day, backed by owned facts.
+        Response sounds like Abby on her best day, backed by owned facts.
 
     Usage:
         engine = HybridEngine()

@@ -59,7 +59,7 @@ class SelfHealingSynapse:
     """When a link breaks, the system re-routes automatically.
 
     Instead of "File Not Found," you get:
-    "/the original dataset moved, but I've re-routed
+    "Abby, the original dataset moved, but I've re-routed
     the connection to its 2025 update on the Bolt."
     """
 

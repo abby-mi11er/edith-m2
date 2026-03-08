@@ -260,6 +260,6 @@ async def session_archive(request: Request):
     result["farewell"] = (
         f"Session archived at {timestamp}. "
         f"{len(result['archived'])} items saved to the Citadel. "
-        "The vault is secure. Sleep well."
+        "The vault is secure. Sleep well, Abby."
     )
     return result

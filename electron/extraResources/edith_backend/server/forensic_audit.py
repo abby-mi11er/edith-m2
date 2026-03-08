@@ -566,7 +566,7 @@ class ForensicAuditOrchestrator:
                             crash_courses: list) -> str:
         """Generate the Winnie morning greeting.
 
-        "Good morning. I've ingested the four readings for today.
+        "Good morning, Abby. I've ingested the four readings for today.
         I've also pulled the raw replication data for the Mettler paper."
         """
         paper = audit["paper"]
@@ -698,7 +698,7 @@ class ForensicAuditOrchestrator:
             "successful": successful,
             "results": results,
             "greeting": (
-                f"Good morning. I've ingested {successful} new readings. "
+                f"Good morning, Abby. I've ingested {successful} new readings. "
                 f"Forensic audits complete — crash courses and theory bridges are ready."
             ),
         }

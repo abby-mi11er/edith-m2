@@ -43,7 +43,7 @@ log = logging.getLogger("edith.method_sandbox")
 LUBBOCK_DEMOGRAPHICS = {
     "total_population": 310_000,
     "age_distribution": {
-        "18-24": 0.18,  # university student population
+        "18-24": 0.18,  # Texas Tech student population
         "25-34": 0.16,
         "35-44": 0.13,
         "45-54": 0.12,
