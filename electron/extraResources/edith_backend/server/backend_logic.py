@@ -506,10 +506,10 @@ def build_answer_prompt(
     if not plan or not plan.get("used"):
         source_instruction = (
             "IMPORTANT CITATION RULES:\n"
-            "- Cite sources inline using (S#) or [S#] tags within your prose.\n"
+            "- Cite sources inline using parenthetical (Author, Year) format within your prose.\n"
             "- Do NOT list, enumerate, or reproduce the source labels at the end of your answer.\n"
             "- Do NOT write a 'Sources' or 'References' section — the system handles that automatically.\n"
-            "- Do NOT echo any raw metadata, source block format, or labels like '[S1] Source 1'.\n"
+            "- Do NOT echo any raw metadata, source block format, or labels.\n"
         )
         if depth == "debate":
             return (
@@ -536,10 +536,10 @@ def build_answer_prompt(
 
     source_instruction = (
         "IMPORTANT CITATION RULES:\n"
-        "- Cite sources inline using (S#) or [S#] tags within your prose.\n"
+        "- Cite sources inline using parenthetical (Author, Year) format within your prose.\n"
         "- Do NOT list, enumerate, or reproduce the source labels at the end of your answer.\n"
         "- Do NOT write a 'Sources' or 'References' section — the system handles that automatically.\n"
-        "- Do NOT echo any raw metadata, source block format, or labels like '[S1] Source 1'.\n"
+        "- Do NOT echo any raw metadata, source block format, or labels.\n"
     )
 
     if depth == "debate":
@@ -596,7 +596,14 @@ def _build_scholarly_context(sources: list[dict], question: str) -> str:
         
         for i, s in enumerate(sources):
             text = s.get("text", "") or s.get("content", "") or ""
-            label = f"S{i+1}"
+            author = s.get("author", "") or (s.get("metadata", {}) or {}).get("author", "")
+            year = s.get("year", "") or (s.get("metadata", {}) or {}).get("year", "")
+            if author and year:
+                label = f"{author} ({year})"
+            elif author:
+                label = author
+            else:
+                label = f"Source {i+1}"
             
             methods = detect_methodology(text)
             if methods:

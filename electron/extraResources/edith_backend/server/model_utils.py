@@ -385,8 +385,20 @@ def build_support_audit_source_blocks(
         if snippet:
             snippet = snippet[:max_snippet_chars]
 
-        # Clean format: [S#] Label, then content on next line
-        block = f"[S{i}] {label}\n"
+        # Clean format: [Author (Year)] Label, then content on next line
+        # Use author-date as the citation key so the model cites naturally
+        if author and year:
+            cite_key = f"{author} ({year})"
+        elif author:
+            cite_key = author
+        elif title and year:
+            cite_key = f"{title} ({year})"
+        elif title:
+            cite_key = title
+        else:
+            cite_key = f"Source {i}"
+
+        block = f"[{cite_key}]\n"
         if topic:
             block += f"Topic: {topic}\n"
         if snippet:
