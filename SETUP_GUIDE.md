@@ -88,14 +88,27 @@ Chrome opens to E.D.I.T.H. You're ready to go.
 
 ## Part 1: API Keys
 
-### What You Need
+### All Available API Keys
 
 | Key | Required? | What It Powers | Free Tier? |
 |---|---|---|---|
-| **Google Gemini** | **Yes** | Winnie chat, Paper Dive, Methods Lab, Citations, follow-ups, peer review | Yes — generous free tier |
-| **OpenAI** | No (recommended) | Vibe Coder code generation (GPT-4.1 writes better Stata/R/Python) | No — pay-as-you-go |
+| **Google Gemini** | **Yes** | Winnie chat, Paper Dive, Methods Lab, Citations, peer review | Yes — generous free tier |
+| **OpenAI** | Recommended | Vibe Coder code generation (GPT-4.1), fine-tuned Winnie models | Pay-as-you-go |
+| **Semantic Scholar** | No | Enhanced citation search with higher rate limits | Yes — request access |
+| **LegiScan** | No | US legislation search in Search panel | Yes — free tier |
+| **NYT** | No | New York Times article search | Yes — free tier |
+| **SerpAPI** | No | Google Scholar search results | Free trial |
+| **Perplexity** | No | AI-powered search | Pay-as-you-go |
 | **Mendeley** | No | Citation library sync from Mendeley account | Yes |
+| **Zotero** | No | Citation library sync from Zotero | Yes |
 | **Notion** | No | Note sync to/from Notion databases | Yes |
+| **Overleaf** | No | LaTeX document sync | Yes |
+| **Anthropic** | No | Claude as an alternative LLM | Pay-as-you-go |
+| **Mathpix** | No | OCR for equations in scanned PDFs | Free trial |
+| **Google Earth Engine** | No | Spatial/GIS data features | Yes — academic |
+| **Sentry** | No | Error monitoring (for developers) | Yes — free tier |
+
+> **Only `GOOGLE_API_KEY` is required.** Everything else is optional and progressively unlocks more features. Start with just Gemini and add more keys as you want more capabilities.
 
 ### How to Get Each Key
 
@@ -104,23 +117,38 @@ Chrome opens to E.D.I.T.H. You're ready to go.
 2. Click "Create API Key"
 3. Copy the key (starts with `AIza...`)
 
-**OpenAI (optional):**
+**OpenAI (recommended):**
 1. Go to [platform.openai.com/api-keys](https://platform.openai.com/api-keys)
 2. Click "Create new secret key"
 3. Copy the key (starts with `sk-...`)
 4. Add a payment method at [platform.openai.com/account/billing](https://platform.openai.com/account/billing)
 
-**Mendeley (optional):**
+**Semantic Scholar:**
+1. Go to [semanticscholar.org/product/api](https://www.semanticscholar.org/product/api#Partner-Form)
+2. Request an API key (usually approved in 1-2 days)
+
+**LegiScan:**
+1. Go to [legiscan.com/legiscan](https://legiscan.com/legiscan)
+2. Create account → get API key
+
+**NYT:**
+1. Go to [developer.nytimes.com](https://developer.nytimes.com/get-started)
+2. Create an app → copy API key
+
+**Mendeley:**
 1. Go to [dev.mendeley.com](https://dev.mendeley.com)
 2. Register an application
 3. Copy the Client ID and Client Secret
-4. Use E.D.I.T.H.'s OAuth flow to get access/refresh tokens
+4. Use E.D.I.T.H.'s OAuth flow (Settings → Connectors) to get access/refresh tokens
 
-**Notion (optional):**
+**Zotero:**
+1. Go to [zotero.org/settings/keys](https://www.zotero.org/settings/keys)
+2. Create a new private key
+
+**Notion:**
 1. Go to [notion.so/my-integrations](https://www.notion.so/my-integrations)
-2. Click "New integration"
-3. Copy the Internal Integration Token
-4. Share your target database with the integration
+2. Click "New integration" → copy token
+3. Share your database with the integration
 
 ### Where to Put Them
 
@@ -128,15 +156,9 @@ Chrome opens to E.D.I.T.H. You're ready to go.
 # Copy the template:
 cp electron/extraResources/edith_backend/.env.example \
    electron/extraResources/edith_backend/.env
-
-# Edit .env and paste your keys:
-GOOGLE_API_KEY=AIza...your_real_key...
-OPENAI_API_KEY=sk-...your_real_key...       # optional
-MENDELEY_CLIENT_ID=12345                     # optional
-MENDELEY_CLIENT_SECRET=abc123                # optional
-NOTION_TOKEN=ntn_...                         # optional
-NOTION_DATABASE_ID=...                       # optional
 ```
+
+Open `.env` in any text editor and fill in the keys you have. See `.env.example` for the full list with links to get each key.
 
 > **Never commit `.env` to git.** It is already in `.gitignore`.
 
@@ -470,6 +492,66 @@ All optional — the defaults work out of the box with just `GOOGLE_API_KEY`.
 | `EDITH_CHROMA_DIR` | `Edith_M4/ChromaDB` | Vector DB location |
 | `EDITH_CHROMA_COLLECTION` | `edith_docs_pdf` | Collection name |
 | `EDITH_GEN_TIMEOUT` | `120` | LLM response timeout (seconds) |
+
+---
+
+## Part 7: Fine-Tuning Your Own Winnie Model
+
+E.D.I.T.H. supports using a **fine-tuned OpenAI model** as Winnie's brain. This makes responses more personalized to your research style, vocabulary, and field.
+
+### What Fine-Tuning Does
+
+Instead of using a generic GPT-4 model, you can train a custom model on:
+- Your own Q&A pairs (how you'd answer research questions)
+- Your writing style and academic voice
+- Your field's terminology and conventions
+- Your preferred citation and explanation patterns
+
+### How to Fine-Tune
+
+1. **Prepare training data** — create a `.jsonl` file with prompt/completion pairs:
+```json
+{"messages": [{"role": "system", "content": "You are Winnie, a research assistant."}, {"role": "user", "content": "What is the principal-agent problem?"}, {"role": "assistant", "content": "The principal-agent problem arises when..."}]}
+{"messages": [{"role": "system", "content": "You are Winnie, a research assistant."}, {"role": "user", "content": "Explain difference-in-differences."}, {"role": "assistant", "content": "Difference-in-differences (DID) is a causal inference method..."}]}
+```
+
+2. **Upload and train** via OpenAI:
+```bash
+# Upload training file
+openai api files.create -f my_training_data.jsonl -p fine-tune
+
+# Start fine-tuning job (on GPT-4o)
+openai api fine_tuning.jobs.create \
+  -m gpt-4o-2024-08-06 \
+  -t file-abc123
+
+# Check status
+openai api fine_tuning.jobs.list
+```
+
+3. **Use your model** — when training completes, you get a model ID like:
+```
+ft:gpt-4o-2024-08-06:personal:winnie-v1:XXXXXXXX
+```
+
+4. **Add to `.env`:**
+```
+OPENAI_FT_MODEL=ft:gpt-4o-2024-08-06:personal:winnie-v1:XXXXXXXX
+```
+
+E.D.I.T.H. will automatically use your fine-tuned model for Winnie's responses when this is set.
+
+### Tips for Good Training Data
+
+- **50-100 examples minimum** for noticeable improvement
+- Include a mix of: short answers, long lit reviews, methodology explanations
+- Match the tone and depth you want in responses
+- Include examples from different subfields/courses
+- Quality over quantity — 50 great examples beat 500 mediocre ones
+
+### Cost
+
+Fine-tuning GPT-4o costs ~$25 per million training tokens. A typical 100-example dataset runs about $3-5 to train.
 
 ---
 
