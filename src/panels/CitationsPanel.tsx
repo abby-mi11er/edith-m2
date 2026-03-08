@@ -244,9 +244,26 @@ export default function CitationsPanel() {
                 <button className="btn btn--primary" onClick={() => loadCitations()} disabled={loading}>
                     {loading ? 'Loading...' : 'Search'}
                 </button>
-                {citations.length > 0 && (
+                {citations.length > 0 && (<>
                     <button className="btn btn--sm" onClick={exportBibtex}>Export BibTeX</button>
-                )}
+                    <button className="btn btn--sm" title="Push citations to Overleaf project" onClick={async () => {
+                        try {
+                            const st = await fetch(apiUrl('/api/connectors/overleaf/status'))
+                            if (st.ok) {
+                                const status = await st.json()
+                                if (!status.available) { alert('Set OVERLEAF_GIT_TOKEN in .env to enable Overleaf sync'); return }
+                            }
+                            const titles = citations.map((c: any) => c.title || '').filter(Boolean)
+                            const res = await fetch(apiUrl('/api/connectors/overleaf/push'), {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ citations: titles, query }),
+                            })
+                            if (res.ok) alert('Pushed to Overleaf!')
+                            else alert('Overleaf push failed — check token')
+                        } catch { alert('Overleaf push failed — check connection') }
+                    }}>Push to Overleaf</button>
+                </>)}
             </div>
 
             <div className="panel__body">

@@ -15,13 +15,13 @@ interface SearchResult {
     source: string
 }
 
-type SearchSource = 'all' | 'openalex' | 'local' | 'legiscan' | 'nyt'
+type SearchSource = 'all' | 'openalex' | 'local' | 'scholar' | 'nyt'
 
 const SOURCES: { id: SearchSource; label: string }[] = [
     { id: 'all', label: 'All Sources' },
     { id: 'openalex', label: 'Academic' },
     { id: 'local', label: 'My Library' },
-    { id: 'legiscan', label: 'Legislation' },
+    { id: 'scholar', label: 'Scholar' },
     { id: 'nyt', label: 'News' },
 ]
 
@@ -130,7 +130,7 @@ export default function SearchPanel() {
             all: `/api/research/search?q=${q}&source=all&per_page=20`,
             openalex: `/api/openalex/search?q=${q}&per_page=20`,
             local: `/api/search?q=${q}&source=local&per_page=20`,
-            legiscan: `/api/search?q=${q}&source=legiscan&per_page=20`,
+            scholar: `/api/scholar/search?q=${q}&limit=20`,
             nyt: `/api/nyt/search?q=${q}`,
         }
 
@@ -221,7 +221,7 @@ export default function SearchPanel() {
                 <input
                     className="input"
                     type="text"
-                    placeholder="Search papers, legislation, news..."
+                    placeholder="Search papers, Semantic Scholar, news..."
                     value={query}
                     onChange={e => setQuery(e.target.value)}
                     onKeyDown={e => e.key === 'Enter' && search()}
@@ -236,7 +236,7 @@ export default function SearchPanel() {
                     <div className="placeholder">
                         <span className="placeholder__title">Search across all sources at once</span>
                         <span className="placeholder__text">
-                            OpenAlex, your library, legislation sources, and NYT
+                            OpenAlex, Semantic Scholar, your library, and NYT
                         </span>
                     </div>
                 )}

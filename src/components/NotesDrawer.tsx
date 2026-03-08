@@ -44,7 +44,7 @@ export default function NotesDrawer({ open, onClose }: { open: boolean; onClose:
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ content: text }),
-        }).catch(() => {})
+        }).catch(() => { })
     }, [draft, notes])
 
     const deleteNote = useCallback((id: string) => {
@@ -60,7 +60,25 @@ export default function NotesDrawer({ open, onClose }: { open: boolean; onClose:
             <div className="notes-drawer" onClick={e => e.stopPropagation()}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-4)' }}>
                     <span style={{ fontWeight: 600, fontSize: 'var(--text-base)' }}>Quick Notes</span>
-                    <button className="btn btn--sm btn--ghost" onClick={onClose}>✕</button>
+                    <div style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'center' }}>
+                        <button className="btn btn--sm btn--ghost" title="Export notes to Notion" onClick={async () => {
+                            try {
+                                const st = await fetch(apiUrl('/api/connectors/notion/status'))
+                                if (st.ok) {
+                                    const status = await st.json()
+                                    if (!status.available) { alert('Set NOTION_TOKEN in .env to enable Notion sync'); return }
+                                }
+                                const allText = notes.map(n => n.text).join('\n\n---\n\n')
+                                await fetch(apiUrl('/api/notes/export'), {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ content: allText, target: 'notion' }),
+                                })
+                                alert('Notes exported to Notion!')
+                            } catch { alert('Notion export failed — check connection') }
+                        }}>📤 Notion</button>
+                        <button className="btn btn--sm btn--ghost" onClick={onClose}>✕</button>
+                    </div>
                 </div>
 
                 <div style={{ display: 'flex', gap: 'var(--space-2)', marginBottom: 'var(--space-4)' }}>

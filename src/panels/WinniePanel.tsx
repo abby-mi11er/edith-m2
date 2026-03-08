@@ -26,12 +26,21 @@ export default function WinniePanel() {
     const { messages, addMessage, updateLastMessage, isStreaming, setStreaming, committeeMode, setCommitteeMode, clearMessages, setActiveTab, historyOpen, toggleHistory, saveCurrentChat } = useStore()
     const [input, setInput] = useState('')
     const [mode, setMode] = useState<'grounded' | 'lit_review' | 'counterargument' | 'gap_analysis' | 'exam' | 'teaching_intro' | 'office_hours'>('grounded')
+    const [modelProvider, setModelProvider] = useState<'gemini' | 'claude'>('gemini')
+    const [claudeAvailable, setClaudeAvailable] = useState(false)
     const [followUps, setFollowUps] = useState<string[]>([])
     const bottomRef = useRef<HTMLDivElement>(null)
     const inputRef = useRef<HTMLTextAreaElement>(null)
 
     useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }) }, [messages])
     useEffect(() => { if (!isStreaming) inputRef.current?.focus() }, [isStreaming])
+
+    // Check if Claude is available
+    useEffect(() => {
+        fetch(apiUrl('/api/connectors/anthropic/status')).then(r => r.json()).then(s => {
+            setClaudeAvailable(Boolean(s.available))
+        }).catch(() => { })
+    }, [])
 
     // Auto-save chat when streaming completes
     useEffect(() => {
@@ -69,7 +78,7 @@ export default function WinniePanel() {
                 const res = await fetch(apiUrl('/chat/stream'), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ messages: chatMessages, mode }),
+                    body: JSON.stringify({ messages: chatMessages, mode, model: modelProvider === 'claude' ? 'claude' : undefined }),
                 })
                 if (!res.ok) throw new Error('Chat request failed')
 
@@ -174,6 +183,16 @@ export default function WinniePanel() {
                             <input type="checkbox" checked={committeeMode} onChange={e => setCommitteeMode(e.target.checked)} />
                             Committee
                         </label>
+                        {claudeAvailable && (
+                            <select
+                                value={modelProvider}
+                                onChange={e => setModelProvider(e.target.value as 'gemini' | 'claude')}
+                                style={{ fontSize: 'var(--text-sm)', padding: '2px 8px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-primary)', background: 'var(--bg-secondary)', color: 'var(--text-primary)', cursor: 'pointer' }}
+                            >
+                                <option value="gemini">Gemini</option>
+                                <option value="claude">Claude</option>
+                            </select>
+                        )}
                         <button
                             className={`history-toggle ${historyOpen ? 'history-toggle--active' : ''}`}
                             onClick={toggleHistory}

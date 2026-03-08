@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { useSuggestions, SuggestionChips } from '../components/useSuggestions'
 import { apiUrl } from '../api'
@@ -43,7 +43,16 @@ export default function PaperDivePanel() {
     const [followUpAnswer, setFollowUpAnswer] = useState('')
     const [peerReview, setPeerReview] = useState('')
     const [loading, setLoading] = useState(false)
+    const [useMathpix, setUseMathpix] = useState(false)
+    const [mathpixAvailable, setMathpixAvailable] = useState(false)
     const diveSuggestions = useSuggestions(sections.map(s => s.title).join(', '), 3)
+
+    // Check if Mathpix is available
+    useEffect(() => {
+        fetch(apiUrl('/api/connectors/mathpix/status')).then(r => r.json()).then(s => {
+            setMathpixAvailable(Boolean(s.available))
+        }).catch(() => { })
+    }, [])
 
     const startDive = useCallback(async () => {
         const query = paperInput.trim()
@@ -57,7 +66,7 @@ export default function PaperDivePanel() {
             const res = await fetch(apiUrl('/api/deep-dive/start'), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ question: query, title: query, wait_seconds: 30 }),
+                body: JSON.stringify({ question: query, title: query, wait_seconds: 30, ocr: useMathpix ? 'mathpix' : undefined }),
             })
             if (!res.ok) {
                 const errData = await res.json().catch(() => ({}))
@@ -168,6 +177,12 @@ export default function PaperDivePanel() {
                 <button className="btn btn--primary" onClick={startDive} disabled={loading}>
                     {loading ? 'Analyzing...' : 'Deep Dive'}
                 </button>
+                {mathpixAvailable && (
+                    <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', cursor: 'pointer', whiteSpace: 'nowrap' }} title="Uses Mathpix for better equation extraction from scanned PDFs">
+                        <input type="checkbox" checked={useMathpix} onChange={e => setUseMathpix(e.target.checked)} />
+                        Enhanced OCR
+                    </label>
+                )}
                 <input type="file" id="ocr-upload" accept="image/*,.pdf" style={{ display: 'none' }}
                     onChange={async (e) => {
                         const file = e.target.files?.[0]
